@@ -1,13 +1,8 @@
 #БД
 
-data/*
+/data/*
+!/data/.gitkeep
 
-users.json
-inventory.json
-session.json
-
-users.v1.json
-inventory.v1.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

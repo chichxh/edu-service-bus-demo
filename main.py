@@ -59,12 +59,7 @@ def main():
         print("0. Выход") 
         choice = input("Введите номер действия: ").strip() 
  
-        if choice == "1": 
-            # TODO: Вызвать AuthService для регистрации пользователя 
-            # - запрос имени пользователя и пароля 
-            # - определить роль (admin/user) 
-            print("-------------------------- ") 
-            
+        if choice == "1":        
             while True:
                 print("\nВыберите роль:")
                 print("1. Admin")
@@ -90,22 +85,6 @@ def main():
                 "entered_role": entered_role })
  
         elif choice == "2": 
-            # TODO: Вызвать AuthService для входа 
-            while True:
-                print("\nВыберите роль:")
-                print("1. Admin")
-                print("2. User")
-                choice = input("Введите номер действия: ").strip() 
-                if choice == "1":
-                    entered_role = "Admin"
-                    break 
-                elif choice == "2":
-                    entered_role = "User" 
-                    break
-                else:
-                    print("Некорректный выбор, попробуйте снова.") 
-
-
             entered_username = None
             entered_email = None
 
