@@ -72,3 +72,5 @@ class PurchaseService:
             save_inventory_db(db)
             log_action("PurchaseService", "item_added", {"sku": sku, "name": name, "price": price, "on_hand": on_hand})
             print(f"[PurchaseService] Добавлен товар '{name}' (sku {sku}), цена {price}, на складе {on_hand}.")
+
+            self.bus.publish("WarehouseUpdated", {"action": "warehosueUpdateNotify"})
