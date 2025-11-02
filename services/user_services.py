@@ -57,28 +57,30 @@ class AuthService:
         entered_email = (data.get("entered_email") or "").strip()
         entered_password = (data.get("entered_password") or "").strip()
 
+        log_action("AuthService", "login_attempt", {"entered_username": entered_username, 
+                                                       "entered_email": entered_email, 
+                                                       "entered_password":entered_password,})
+
         db = load_users_db()
         idx = db.get("indexes", {})
         users = db.get("users", {})
         uid = idx.get("by_username", {}).get(entered_username) or idx.get("by_email", {}).get(entered_email)
         if not uid or uid not in users:
+            log_action("AuthService", "user_login_failed", {"username": entered_username, "reason": "Can not find user"})
             print("[AuthService] Пользователь не найден.")
             return None
 
         user_obj = users[uid]
         if user_obj.get("password_hash") != entered_password:
             print("[AuthService] Неверный пароль.")
-            log_action("AuthService", "login_failed_wrong_password",
-                {"username": entered_username or entered_email})
+            log_action("AuthService", "user_login_failed", {"username": entered_username, "entered_password": entered_password, "reason": "Wrong password"})
             return None
 
         save_session(uid, user_obj, source="login")
         log_action("AuthService", "login_success", {"user_id": uid, "username": user_obj.get("username")})
         print(f"[AuthService] Добро пожаловать, {user_obj.get('username')}!")
-        try: self.bus.publish("user_authenticated", {"user_id": uid, "username": user_obj.get("username"), "role": user_obj.get("role")})
-        except Exception: pass
-        return {"user_id": uid, "username": user_obj.get("username"), "role": user_obj.get("role")}
 
+        self.bus.publish("user_authenticated", {"user_id": uid, "username": user_obj.get("username"), "role": user_obj.get("role")})
 
 class VerificationService: 
     """Подтверждение почты и проверка данных""" 
@@ -86,12 +88,14 @@ class VerificationService:
         action = data.get("action") 
         if action == "verify_email": 
             user_obj = data.get("user_obj")
-            print("Is this your email?", user_obj["email"])
-            choise = input("[Y] - Yes, [N] - No: ").strip()
-            if choise == "Y" or "y":
+            print("Is this your email?", user_obj.get("email"))
+            choise = input("[Y] - Yes, [N] - No: ").strip().lower()
+            if choise == "y":
+                log_action("VerificationService", "verification_success", {"email": user_obj.get("email")})
                 self.bus.publish("emailVerificated", {"action": "create_profile", "user_obj": user_obj})
-            elif choise == "N" or "n":
-                self.bus.publish("emailVerificationFail", {action: "notifyEmailVerificationFail", user_obj: user_obj})
+            elif choise == "n":
+                log_action("VerificationService", "verification_failed", {"email": user_obj.get("email")})
+                self.bus.publish("emailVerificationFail", {"action": "notifyEmailVerificationFail", "user_obj": user_obj})
 
  
 class ProfileService: 
