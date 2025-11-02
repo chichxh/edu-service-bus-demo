@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "version": 1,
+    "updated_at": "2025-11-02T11:38:40Z"
+  },
+  "users": {
+    "usr_0001": {
+      "username": "ivan90",
+      "email": "ivanivanov@mail.ru",
+      "role": "user",
+      "password_hash": "pass123",
+      "status": "active",
+      "account": {
+        "balance": 2000,
+        "currency": "RUB"
+      },
+      "created_at": "2025-10-31T13:42:13Z",
+      "updated_at": "2025-10-31T13:42:13Z",
+      "deleted_at": null
+    },
+    "usr_0002": {
+      "username": "petr85",
+      "email": "petr@mail.ru",
+      "role": "user",
+      "password_hash": "qwerty",
+      "status": "active",
+      "account": {
+        "balance": 60000,
+        "currency": "RUB"
+      },
+      "created_at": "2025-10-31T13:42:13Z",
+      "updated_at": "2025-10-31T13:42:13Z",
+      "deleted_at": null
+    },
+    "usr_0003": {
+      "username": "maria92",
+      "email": "mari@mail.ru",
+      "role": "user",
+      "password_hash": "maria2025",
+      "status": "active",
+      "account": {
+        "balance": 50000,
+        "currency": "RUB"
+      },
+      "created_at": "2025-10-31T13:42:13Z",
+      "updated_at": "2025-10-31T13:42:13Z",
+      "deleted_at": null
+    },
+    "usr_0004": {
+      "username": "kesha12",
+      "email": "innok@mail.ru",
+      "role": "user",
+      "password_hash": "password",
+      "status": "active",
+      "account": {
+        "balance": 0,
+        "currency": "RUB"
+      },
+      "created_at": "2025-10-31T13:42:13Z",
+      "updated_at": "2025-10-31T13:42:13Z",
+      "deleted_at": null
+    },
+    "usr_0006": {
+      "username": "as",
+      "email": "as",
+      "role": "user",
+      "password_hash": "as",
+      "status": "active",
+      "account": {
+        "balance": 0,
+        "currency": "RUB"
+      },
+      "created_at": "2025-11-02T10:24:13Z",
+      "updated_at": "2025-11-02T10:24:13Z"
+    },
+    "usr_0007": {
+      "username": "2",
+      "email": "2",
+      "role": "user",
+      "password_hash": "3",
+      "status": "active",
+      "account": {
+        "balance": 0,
+        "currency": "RUB"
+      },
+      "created_at": "2025-11-02T10:48:05Z",
+      "updated_at": "2025-11-02T10:48:05Z"
+    },
+    "usr_0008": {
+      "username": "zxczxc",
+      "email": "zxczxc",
+      "role": "user",
+      "password_hash": "zxczxc",
+      "status": "active",
+      "account": {
+        "balance": 0,
+        "currency": "RUB"
+      },
+      "created_at": "2025-11-02T11:38:40Z",
+      "updated_at": "2025-11-02T11:38:40Z"
+    }
+  },
+  "indexes": {
+    "by_username": {
+      "ivan90": "usr_0001",
+      "petr85": "usr_0002",
+      "maria92": "usr_0003",
+      "kesha12": "usr_0004",
+      "as": "usr_0006",
+      "2": "usr_0007",
+      "zxczxc": "usr_0008"
+    },
+    "by_email": {
+      "ivanivanov@mail.ru": "usr_0001",
+      "petr@mail.ru": "usr_0002",
+      "mari@mail.ru": "usr_0003",
+      "innok@mail.ru": "usr_0004",
+      "as": "usr_0006",
+      "2": "usr_0007",
+      "zxczxc": "usr_0008"
+    }
+  }
+}
