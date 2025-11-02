@@ -32,17 +32,16 @@ class PurchaseService:
                 print("[PurchaseService] Доступ запрещён: требуется роль администратора.")
                 log_action("PurchaseService", "add_item_denied", {"reason": "not_admin"})
                 return
-            payload = (data or {}).get("payload") or {}
-            name = str(payload.get("name", "")).strip()
-            price = payload.get("price", None)
-            on_hand = payload.get("on_hand", None)
+            name = str(data.get("name", "")).strip()
+            price = data.get("price", None)
+            on_hand = data.get("on_hand", None)
 
             # Валидация
             if not name:
                 print("[PurchaseService] Некорректное имя товара (пусто).")
                 return
             try:
-                price = int(price)
+                price = float(price)
             except Exception:
                 print("[PurchaseService] Цена должна быть целым числом.")
                 return

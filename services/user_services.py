@@ -16,7 +16,7 @@ class AuthService:
         entered_username = (data.get("entered_username") or "").strip()
         entered_email = (data.get("entered_email") or "").strip()
         entered_password = (data.get("entered_password") or "").strip()
-        role = (data.get("role") or "user").strip() or "user"
+        role = (data.get("entered_role") or "user").strip() or "user"
 
         log_action("AuthService", "register_attempt", {"entered_username": entered_username, 
                                                        "entered_email": entered_email, 

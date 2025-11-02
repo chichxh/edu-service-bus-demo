@@ -66,10 +66,10 @@ def main():
                 print("2. User")
                 choice = input("Введите номер действия: ").strip() 
                 if choice == "1":
-                    entered_role = "Admin"
+                    entered_role = "admin"
                     break 
                 elif choice == "2":
-                    entered_role = "User" 
+                    entered_role = "user" 
                     break
                 else:
                     print("Некорректный выбор, попробуйте снова.") 
@@ -107,14 +107,31 @@ def main():
             bus.send("auth", {"action": "login",
                     "entered_email": entered_email, 
                     "entered_username": entered_username, 
-                    "entered_password": entered_password, 
-                    "entered_role": entered_role })
+                    "entered_password": entered_password })
 
  
         elif choice == "3": 
-            # TODO: Вызвать PurchaseService для управления складом 
-            # - проверить права пользователя (только admin) 
-            pass 
+             while True:
+                print("\nВыберите действие:")
+                print("1. Посмотреть таблицу товаров")
+                print("2. Добавить новый товар")
+                print("3. Обратно")
+                choice = input("Введите номер действия: ").strip() 
+                if choice == "1":
+                    bus.send("inventory", {"action": "list_items"})
+                elif choice == "2":
+                    name = input("Введите название нового товара: ").strip().lower()
+                    price = float(input("Введите цену товара: "))
+                    on_hand = int(input("Введите количество товара: "))
+                    bus.send("purchase",
+                             {"action": "add_item", 
+                              "name": name, 
+                              "price": price,
+                              "on_hand": on_hand})
+                elif choice == "3":
+                    break
+                else:
+                    print("Некорректный выбор, попробуйте снова.") 
  
         elif choice == "4": 
             # TODO: Вызвать OrderService для создания нового заказа 
