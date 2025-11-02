@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": 1,
-    "updated_at": "2025-11-02T11:38:40Z"
+    "updated_at": "2025-11-02T11:56:04Z"
   },
   "users": {
     "usr_0001": {
@@ -98,6 +98,19 @@
       },
       "created_at": "2025-11-02T11:38:40Z",
       "updated_at": "2025-11-02T11:38:40Z"
+    },
+    "usr_0009": {
+      "username": "chichxh",
+      "email": "egorodand@gmail.com",
+      "role": "user",
+      "password_hash": "asdasd",
+      "status": "active",
+      "account": {
+        "balance": 0,
+        "currency": "RUB"
+      },
+      "created_at": "2025-11-02T11:56:04Z",
+      "updated_at": "2025-11-02T11:56:04Z"
     }
   },
   "indexes": {
@@ -108,7 +121,8 @@
       "kesha12": "usr_0004",
       "as": "usr_0006",
       "2": "usr_0007",
-      "zxczxc": "usr_0008"
+      "zxczxc": "usr_0008",
+      "chichxh": "usr_0009"
     },
     "by_email": {
       "ivanivanov@mail.ru": "usr_0001",
@@ -117,7 +131,8 @@
       "innok@mail.ru": "usr_0004",
       "as": "usr_0006",
       "2": "usr_0007",
-      "zxczxc": "usr_0008"
+      "zxczxc": "usr_0008",
+      "egorodand@gmail.com": "usr_0009"
     }
   }
 }
