@@ -33,18 +33,22 @@ def main():
 
     bus.subscribe("registerAttemptCreated", "verify")
     bus.subscribe("emailVerificated", "profile")
-    bus.subscribe("emailVerificationFail", "notify")
+    bus.subscribe("emailVerificationRequested", "notify", "on_email_verification_code")
+    bus.subscribe("emailVerificationFail", "notify", "on_email_verification_fail")
 
     bus.subscribe("orderCreated", "inventory")
-    bus.subscribe("ProductInStock", "payment")
-    bus.subscribe("ProductOutOfStock", "notify")
-    bus.subscribe("PaymentSuccess", "inventory")
-    bus.subscribe("PaymentFailed", "notify")
-    bus.subscribe("ProductReserved", "delivery")
-    bus.subscribe("DeliveryScheduled", "notify")
+    bus.subscribe("ProductInStock", "inventory")
+    bus.subscribe("PaymentRequested","payment")
+    bus.subscribe("ProductOutOfStock", "notify", "on_product_out_of_stock")
+    bus.subscribe("PaymentSuccess", "delivery")
+    bus.subscribe("PaymentFailed", "notify", "on_payment_failed")
+    bus.subscribe("DeliveryScheduled", "notify", "on_delivery_scheduled")
+
+    bus.subscribe("ProductReserveRelease", "inventory")  # снять резерв при неуспешной оплате
+    bus.subscribe("ProductReserveCommit", "inventory")   # зафиксировать резерв при успешной оплате
 
     bus.subscribe("PurchaseCreated", "purchase")
-    bus.subscribe("WarehouseUpdated", "notify")
+    bus.subscribe("WarehouseUpdated", "notify", "on_warehouse_updated")
     
 
     # -------------------------- 
@@ -118,7 +122,7 @@ def main():
                 print("3. Обратно")
                 choice = input("Введите номер действия: ").strip() 
                 if choice == "1":
-                    bus.send("inventory", {"action": "list_items"})
+                    bus.send("inventory", {"action": "list_items_full"})
                 elif choice == "2":
                     name = input("Введите название нового товара: ").strip().lower()
                     price = float(input("Введите цену товара: "))
@@ -134,12 +138,33 @@ def main():
                     print("Некорректный выбор, попробуйте снова.") 
  
         elif choice == "4": 
-            # TODO: Вызвать OrderService для создания нового заказа 
-            # - проверить наличие товара через InventoryService 
-            pass 
+            print("\nВыберите товар:")
+            resp = bus.send("inventory", {"action": "list_items", "print": True, "sort_by": "name"})
+            items = (resp or {}).get("items") or []
+            if not items:
+                print("Склад пуст.")
+                item_choice = None
+            else:
+                # выбор по номеру
+                while True:
+                    raw = input("Выберите товар. Введите число: ").strip()
+                    if raw.isdigit():
+                        idx = int(raw)
+                        if 1 <= idx <= len(items):
+                            item_choice = items[idx - 1]   # <-- сохраняем выбор
+                            break
+                    print("Некорректный номер. Попробуйте ещё раз.")
+
+                # передаём в сервис заказов СТАБИЛЬНЫЙ идентификатор — SKU
+                sku = item_choice["sku"]
+                qty_raw = input("Количество (по умолчанию 1): ").strip() or "1"
+                try:
+                    qty = max(1, int(qty_raw))
+                except Exception:
+                    qty = 1
+                bus.send("order", {"action": "createOrder", "sku": sku, "qty": qty})
 
 
- 
         elif choice == "0": 
             clear_session()
             print("Выход из системы...") 

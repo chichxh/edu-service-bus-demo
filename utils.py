@@ -77,7 +77,7 @@ def log_action(service: str, event: str, payload: Optional[dict] = None) -> None
     LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         f.write(json.dumps(entry, ensure_ascii=False) + "\n")
-    print(f"[{entry['ts']}] {service}: {event}")
+    # print(f"[{entry['ts']}] {service}: {event}")
 
 
 # --- Опознание схемы и индексы ----------------------------------------------

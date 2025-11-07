@@ -50,7 +50,7 @@ class ServiceBus:
         service = self.services[target_service]
         if handler_method and hasattr(service, handler_method):
             # Вызываем специфический обработчик события
-            getattr(service, handler_method)(data)
+            return getattr(service, handler_method)(data)
         else:
             # Вызываем стандартный обработчик
-            service.handle(data)
+            return service.handle(data)

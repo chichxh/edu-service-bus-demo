@@ -1,11 +1,13 @@
 пользователь авторизуется -> сохраним во время сессии этого пользователя.  сессия закончится когда пользователь нажмет на 0
 
 User:  - bus.send -> OrderCreated -> InventoryService() -> ProductOutOfStock -> NotificationService()
-                                                      -> ProductInStock -> PaymentService() -->
+                                                        -> ProductInStock -> InventoryService(reserveProduct()) -> ProductReserved -> PaymentService() -->
 
---> PaymentSuccess -> InventoryService(reserveProduct()) -> ProductReserved -> DeliveryService() -> DeliveryScheduled -->
+--> PaymentSuccess ->  DeliveryService() -> DeliveryScheduled -> NotificationService()
 --> PaymentFailed -> NotificationService() 
 
---> NotificationService()
 
 Admin:  - bus.send -> PurchaseCreated -> PurchaseService() -> WarehouseUpdated -> NotificationService() 
+
+
+PaymentService должен сравнивать полученные данные от InventoryService и данные о счете пользователя. если на счете есть достаточное количество денег то списываем и присылаем уведомление и начинаем формировать доставку через DeliveryService. если денег нет то присылаем соотв уведомление. Уведомления реализованы через NotificationService, но пока через обычный print()

@@ -1,4 +1,5 @@
 from utils import log_action, load_users_db, save_users_db, users_upsert, save_session
+import random
 
 class AuthService:
     def handle(self, data):
@@ -50,6 +51,7 @@ class AuthService:
         }
 
         self.bus.publish("registerAttemptCreated", {"action": "verify_email", "user_obj": user_obj})
+        log_action("AuthService", "user_authenticated_published", {"user_id": user_obj})
         
 
     def _login(self, data: dict):
@@ -86,11 +88,16 @@ class VerificationService:
         action = data.get("action") 
         if action == "verify_email": 
             user_obj = data.get("user_obj")
-            print("Is this your email?", user_obj["email"])
-            choise = input("[Y] - Yes, [N] - No: ").strip()
-            if choise == "Y" or "y":
+
+            verification_code = str(random.randint(100000, 999999))
+
+            self.bus.publish("emailVerificationRequested", {"user_obj": user_obj, "code": verification_code})
+
+            print(f"Мы отправили код подтверждения на ваш email - '{user_obj["email"]}'")
+            code = input("Введите код: ").strip().lower()
+            if code == verification_code:
                 self.bus.publish("emailVerificated", {"action": "create_profile", "user_obj": user_obj})
-            elif choise == "N" or "n":
+            elif code == verification_code:
                 self.bus.publish("emailVerificationFail", {action: "notifyEmailVerificationFail", user_obj: user_obj})
 
  
